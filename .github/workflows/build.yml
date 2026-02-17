@@ -1,0 +1,29 @@
+name: Build EXE
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install pyinstaller pywin32 psutil
+    
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile --windowed --name "窗口布局管理器" layout_manager.py
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: window-layout-manager
+        path: dist/窗口布局管理器.exe
